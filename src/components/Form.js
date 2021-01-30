@@ -101,6 +101,7 @@ export default function Form() {
                     Name:
                 <input type="text" name="name" id="name" value={formState.name} onChange={inputChange} />
                 </label>
+                {errorState.name ? <span className="error">{errorState.name}</span> : null}
                 {/* dropdown (we will need a praceholder) */}
                 <label htmlFor="size">
                     Size:
