@@ -18,8 +18,11 @@ import axios from "axios";
 const formSchema = yup.object().shape({
     name: yup.string().min(2).required("Name is required"),
     size: yup.string().required("Size is required"),
-    toppings: yup.string().required("Toppings are required"),
-    instructions: yup.string().required("")
+    cheese: yup.string().notRequired(),
+    pepperoni: yup.string().notRequired(),
+    sausage: yup.string().notRequired(),
+    anchovies: yup.string().notRequired(),
+    instructions: yup.string().notRequired()
 })
 
 //component
@@ -28,7 +31,10 @@ export default function Form() {
     const initialData = {
         name: "",
         size: "",
-        toppings: "",
+        cheese: "",
+        pepperoni: "",
+        sausage: "",
+        anchovies: "",
         instructions: ""
     }
 
@@ -46,8 +52,7 @@ export default function Form() {
     //errorState
     const [errorState, setErrorState] = useState({
         name: "",
-        size: "",
-        toppings: ""
+        size: ""
     });
 
     //formSubmit
@@ -68,7 +73,7 @@ export default function Form() {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value; //checkbox validation
         yup
             .reach(formSchema, e.target.name)
-            .validate(value)
+            .validate(e.target.value)
             .then(valid => {
                 setErrorState({ ...errorState, [e.target.name]: "" })
             })
@@ -92,25 +97,42 @@ export default function Form() {
     return (
         <div className="form-container">
             <form onSubmit={formSubmit}>
-
-                {/*name, size, toppings, instructions*/}
                 <label htmlFor="name">
                     Name:
                 <input type="text" name="name" id="name" value={formState.name} onChange={inputChange} />
                 </label>
+                {/* dropdown (we will need a praceholder) */}
                 <label htmlFor="size">
                     Size:
-                <input type="text" name="size" id="size" value={formState.size} onChange={inputChange} />
+                <select name="size" id="size" value={formState.size} onChange={inputChange}>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
                 </label>
-                <label htmlFor="toppings">
-                    Toppings:
-                <input type="text" name="toppings" id="toppings" value={formState.toppings} onChange={inputChange} />
+                {/* check boxes */}
+                <p>Toppings: </p>
+                <label htmlFor="cheese">
+                    Cheese:
+                <input type="checkbox" name="cheese" id="cheese" checked={formState.cheese} onChange={inputChange} />
+                </label>
+                <label htmlFor="pepperoni">
+                    Pepperoni:
+                <input type="checkbox" name="pepperoni" id="pepperoni" checked={formState.pepperoni} onChange={inputChange} />
+                </label>
+                <label htmlFor="sausage">
+                    Sausage:
+                <input type="checkbox" name="sausage" id="sausage" checked={formState.sausage} onChange={inputChange} />
+                </label>
+                <label htmlFor="anchovies">
+                    Anchovies:
+                <input type="checkbox" name="anchovies" id="anchovies" checked={formState.anchovies} onChange={inputChange} />
                 </label>
                 <label htmlFor="instructions">
                     Instructions:
                 <input type="text" name="instructions" id="instructions" value={formState.instructions} onChange={inputChange} />
                 </label>
-                <button disabled={buttonDisabled}>Submit</button>
+                <button disabled={buttonDisabled}>Add to order</button>
             </form>
         </div>
     )
